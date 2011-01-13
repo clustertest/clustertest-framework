@@ -1,0 +1,61 @@
+This project contains the source code for the clustertest testing framework.
+
+clustertest is a testing framework built to test the Slony-I replication system 
+See http://www.slony.info for more information on Slony-I 
+
+
+Clustertest is a distributed testing framework that is divided into the following 
+major components
+
+
+Coordinator
+=========================
+
+The test Coordinator is responsible for overseeing the testing run. 
+It execute a set of javascript 'tests' that perform control the flow
+of the test.  The test scripts that the test coordinator invokes will
+do things like 
+* Create and initialize the database
+* Schedule 'client' test scripts (See below)
+* Invoke slony replication programs 
+* Cleanup the database after the test
+
+The code for the test coordinator can be found in 
+src/info/slony/clustertest/testcoordinator
+
+
+Client
+=====================
+
+Test clients execute scripts written in JavaScript that put perform testing
+actions such as applying load to the database.  Clients scripts are passed to
+remote client worker programs that connect to the server (See client.server.port
+in the configuration file) looking for client tasks.  The coordinator will pass
+the javascript that the client should execute to the test client.
+
+Client scripts should define a Javascript test class with a set of
+test methods.  The client script should then create an instance of the ClientGroup
+class, set the parameters and launch the transactions (by calling the proper method on
+ClientGroup).
+
+The  clustertest-client.jar file contains the test client program that will
+connect to the test coordinator and wait for jobs to become available.  The
+client instances can be launched as
+java -jar clustertest-client.jar -server testcoordinator_server.com:11540
+
+(servername:port where testcoordinator.com is the server to connect to and 11540
+is the port on the server that the test coordinator is listening on)
+
+
+
+Client                  Test Coordinator                  Postgresql
+============connects==>                 
+
+    <=====passes========== client script
+
+=============jdbc connection=============================>
+                                       
+
+
+                                       
+

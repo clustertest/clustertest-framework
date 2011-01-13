@@ -1,0 +1,91 @@
+<project>
+	<property name="lib.dir"     value="lib"/>
+	
+	<path id="classpath">
+		 	<fileset  dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+	
+	
+	<path id="testclasspath">
+		<path refid="classpath"/>
+		<path location="build/classes" />
+		<path location="slony_scripts"/>		
+	</path>
+	
+	
+    <target name="clean">
+        <delete dir="build"/>
+    </target>	
+	
+
+    <target name="compile-common">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"  classpathref="classpath" >
+        	<include name="info/slony/clustertest/common/**"/>        	
+        </javac>
+    </target>
+	
+    <target name="compile-client" depends="compile-common">
+      <mkdir dir="build/classes"/>
+      <javac srcdir="src" destdir="build/classes"  classpathref="classpath">
+	<include name="info/slony/clustertest/client/**" />
+      </javac>
+      <copy toDir="build/classes/info/slony/clustertest/client" flatten="false" >
+	<fileset dir="src/info/slony/clustertest/client">
+	  <patternset>
+	    <include name="**/*.js" />
+	  </patternset>
+	</fileset>
+      </copy>
+    </target>
+	
+    <target name="compile-testcoordinator" depends="compile-common">
+      <mkdir dir="build/classes"/>
+      <javac srcdir="src" destdir="build/classes"  classpathref="classpath">
+	<include name="info/slony/clustertest/testcoordinator/**" />
+      </javac>
+      <copy toDir="build/classes/info/slony/clustertest/testcoordinator" flatten="false" >
+	<fileset dir="src/info/slony/clustertest/testcoordinator">
+	  <patternset>
+	    <include name="**/*.js" />
+	  </patternset>
+	</fileset>
+      </copy>
+    </target>
+    
+    
+    <target name="jar-common" depends="compile-common">
+      <mkdir dir="build/jar"/>
+      <jar destfile="build/jar/clustertest-common.jar" basedir="build/classes">
+        
+        <include name="info/slony/clustertest/common/*" />
+      </jar>
+    </target>
+    
+    <target name="jar-client" depends="compile-client,jar-common">
+      <mkdir dir="build/jar"/>
+      <jar destfile="build/jar/clustertest-client.jar" basedir="build/classes">
+	<manifest>
+	  <attribute name="Main-Class" value="info.slony.clustertest.client.ClientCoordinator"/>
+	</manifest>
+	<include name="info/slony/clustertest/client/*" />
+      </jar>
+      
+    </target>
+    
+    <target name="jar-coordinator" depends="compile-testcoordinator,jar-common,jar-client">	 			
+      <mkdir dir="build/jar"/>	   
+      <jar destfile="build/jar/clustertest-coordinator.jar" basedir="build/classes">
+	<manifest>
+	  <attribute name="Main-Class" value="info.slony.clustertest.testcoordinator.TestCoordinator" />
+	  
+	</manifest>
+	
+      </jar>
+      
+    </target>
+    
+    <target name="jar" depends="jar-coordinator,jar-common,jar-client">
+    </target>
+
+</project>
