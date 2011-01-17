@@ -73,17 +73,18 @@
       
     </target>
     
-    <target name="jar-coordinator" depends="compile-testcoordinator,jar-common,jar-client">	 			
-      <mkdir dir="build/jar"/>	   
-      <jar destfile="build/jar/clustertest-coordinator.jar" basedir="build/classes">
-	<manifest>
-	  <attribute name="Main-Class" value="info.slony.clustertest.testcoordinator.TestCoordinator" />
-	  
-	</manifest>
-	
-      </jar>
-      
-    </target>
+
+	<target name="jar-coordinator" depends="compile-testcoordinator,jar-common,jar-client"  >	 			
+	        <mkdir dir="build/jar"/>	   
+	        <jar destfile="build/jar/clustertest-coordinator.jar" basedir="build/classes">
+	            <manifest>
+	                <attribute name="Main-Class" value="info.slony.clustertest.testcoordinator.TestCoordinator" />
+	                
+	            </manifest>
+		   <zipgroupfileset dir="." includes="lib/*.jar"/>
+	        </jar>
+		
+	    </target>
     
     <target name="jar" depends="jar-coordinator,jar-common,jar-client">
     </target>

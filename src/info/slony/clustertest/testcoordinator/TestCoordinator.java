@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.FileInputStream;
 import java.io.Reader;
 import java.util.Properties;
 
@@ -26,13 +27,17 @@ public class TestCoordinator {
 		// TODO Auto-generated method stub
 		  // Set up a simple configuration that logs on the console.
 		try {
-			PropertyConfigurator.configure("conf/log4j.properties");
+
 			Class.forName("org.postgresql.Driver");
 			String propertiesFileName = args[0];
 			TestCoordinator me = new TestCoordinator();
 			FileReader reader = new FileReader(propertiesFileName);
 			Properties props = new Properties();
 			props.load(reader);
+			String log4jConf = props.getProperty("log4j.conf");
+			if(log4jConf != null) {
+			    PropertyConfigurator.configure(log4jConf);
+			}			 
 			String outputDirectoryName = props.getProperty("output.directory");
 			File outputDirectory = new File(outputDirectoryName);
 			outputDirectory.mkdirs();
@@ -64,7 +69,8 @@ public class TestCoordinator {
 		
 			
 			coordinator = new Coordinator(scope,ctx,properties);
-			InputStream scriptStream = ClassLoader.getSystemResourceAsStream(scriptFile);
+			InputStream scriptStream = new FileInputStream(scriptFile);
+			    //ClassLoader.getSystemResourceAsStream(scriptFile);
 			if(scriptStream==null) {
 				log.error("unable to find test script:" + scriptFile);
 				return;

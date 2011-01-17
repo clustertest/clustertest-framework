@@ -16,6 +16,7 @@ import info.slony.clustertest.testcoordinator.slony.SlonikScript;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -113,7 +114,8 @@ public class Coordinator {
 	 * @throws IOException An IO Exception indicating that their was an error reading the file
 	 */
 	public void includeFile(String fileName) throws IOException {
-		InputStream stream = ClassLoader.getSystemResourceAsStream(fileName);
+	    InputStream stream = new FileInputStream(fileName);
+		    // ClassLoader.getSystemResourceAsStream(fileName);
 		if(stream == null) {
 			throw new IOException("file not found:" + fileName);
 		}
