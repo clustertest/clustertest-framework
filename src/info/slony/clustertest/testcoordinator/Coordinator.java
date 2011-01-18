@@ -288,7 +288,7 @@ public class Coordinator {
 	}
 	
 	public String readFile(String fileName) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(fileName)));
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
 		String line;
 		StringBuffer buffer = new StringBuffer();
 		while( (line=reader.readLine())!=null) {
