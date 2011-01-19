@@ -1,7 +1,46 @@
 This project contains the source code for the clustertest testing framework.
 
 clustertest is a testing framework built to test the Slony-I replication system 
-See http://www.slony.info for more information on Slony-I 
+See http://www.slony.info for more information on Slony-I
+
+Building It All
+========================
+
+This is a Java application, built using the "Ant" build tool, as follows:
+% ant jar
+Buildfile: /var/lib/postgresql/PostgreSQL/clustertest-framework/build.xml
+
+compile-common:
+    [mkdir] Created dir: /var/lib/postgresql/PostgreSQL/clustertest-framework/build/classes
+    [javac] /var/lib/postgresql/PostgreSQL/clustertest-framework/build.xml:23: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+
+compile-testcoordinator:
+    [javac] /var/lib/postgresql/PostgreSQL/clustertest-framework/build.xml:44: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 25 source files to /var/lib/postgresql/PostgreSQL/clustertest-framework/build/classes
+    [javac] Note: /var/lib/postgresql/PostgreSQL/clustertest-framework/src/info/slony/clustertest/testcoordinator/script/ClientScript.java uses or overrides a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+     [copy] Copying 1 file to /var/lib/postgresql/PostgreSQL/clustertest-framework/build/classes/info/slony/clustertest/testcoordinator
+
+jar-common:
+    [mkdir] Created dir: /var/lib/postgresql/PostgreSQL/clustertest-framework/build/jar
+      [jar] Building MANIFEST-only jar: /var/lib/postgresql/PostgreSQL/clustertest-framework/build/jar/clustertest-common.jar
+
+compile-client:
+    [javac] /var/lib/postgresql/PostgreSQL/clustertest-framework/build.xml:30: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 1 source file to /var/lib/postgresql/PostgreSQL/clustertest-framework/build/classes
+     [copy] Copying 2 files to /var/lib/postgresql/PostgreSQL/clustertest-framework/build/classes/info/slony/clustertest/client
+
+jar-client:
+      [jar] Building jar: /var/lib/postgresql/PostgreSQL/clustertest-framework/build/jar/clustertest-client.jar
+
+jar-coordinator:
+      [jar] Building jar: /var/lib/postgresql/PostgreSQL/clustertest-framework/build/jar/clustertest-coordinator.jar
+
+jar:
+
+BUILD SUCCESSFUL
+Total time: 2 seconds
+
 
 
 Clustertest is a distributed testing framework that is divided into the following 
