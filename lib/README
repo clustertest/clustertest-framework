@@ -1,0 +1,21 @@
+There are 4 jar files here, generated from other open source projects:
+
+js.jar
+
+ - This is for org.mozilla.javascript, the Mozilla JavaScript interpreter
+ - Generated 2009-03-22
+
+junit-4.8.1.jar
+
+ - JUnit version 4.8.1
+ - Generated 2009-12-08
+
+log4j-1.2.15.jar
+
+ - Log4J version 1.2.15
+ - Generated 2007-08-25
+
+postgresql-8.4-701.jdbc3.jar
+
+ - PostgreSQL JDBC driver version 8.4-701
+ - Generated 2009-06-30
