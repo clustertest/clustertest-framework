@@ -19,13 +19,14 @@ import org.apache.log4j.Logger;
  * The TestResult class is responsible for storing these results to persistent storage.
  * 
  * 
- * @todo This class needs to put the results somewhere that we can automatically colate them.
+ * @todo This class needs to put the results somewhere that we can automatically collate them.
  *       Currently it is more of a placeholder.
  */
 public class TestResult {
 
 	private volatile int passCount=0;
 	private volatile int failCount=0;
+        private static int testnumber=0;    /* "Primary Key" for test */
 	private String testName;
 	private static Logger log = Logger.getLogger(TestResult.class);
 	
@@ -73,9 +74,10 @@ public class TestResult {
 	}
 	
 	public void assertCheck(String description, Object expected, Object actual) throws IOException {
+	        testnumber++;
 		if(expected.equals(actual)  ) {
 			if(groupDetailFile != null) {
-				groupDetailFile.write("pass," + description + "\n");
+				groupDetailFile.write("pass," + description + "," + testnumber + "\n");
 			}
 			log.info(description + ":passes");
 			passCount++;
@@ -83,7 +85,7 @@ public class TestResult {
 		else {
 			log.info(description + ":fail:" + expected + "," + actual);
 			if(groupDetailFile != null) {
-				groupDetailFile.write("fail," + description + ":" + expected + "," + actual + "\n");
+				groupDetailFile.write("fail," + description + ":" + expected + "," + actual + "," + testnumber + "\n");
 			}
 			failCount++;
 		}
