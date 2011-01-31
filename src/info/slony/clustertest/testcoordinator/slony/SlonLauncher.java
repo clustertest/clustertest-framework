@@ -121,14 +121,19 @@ public class SlonLauncher extends ShellExecScript {
 		}
 		
 		String logLevel = properties.getProperty("slon.loglevel");
-		if (logLevel == null) {
-		    // No log level defined here
-		} else {
+		if (logLevel != null) {
 		    resultBuilder.add("-d" + logLevel);
+		}
+
+		String slonConf = properties.getProperty ("database." + logicalDatabase + ".slonconf");
+		if (slonConf != null) {
+		    resultBuilder.add ("-f " + slonConf);
 		}
 		
 		String clusterName = properties.getProperty("clustername");
-		resultBuilder.add(clusterName);
+		if (clusterName != null) {
+		    resultBuilder.add(clusterName);
+		}
 		
 		String host = properties.getProperty("database." + logicalDatabase + ".host");
 		String dbname = properties.getProperty("database." + logicalDatabase + ".dbname");
