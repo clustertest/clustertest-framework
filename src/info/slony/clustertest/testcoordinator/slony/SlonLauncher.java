@@ -120,7 +120,12 @@ public class SlonLauncher extends ShellExecScript {
 			resultBuilder.add(logshippingDirectory);
 		}
 		
-		resultBuilder.add("-d4");
+		String logLevel = properties.getProperty("slon.loglevel");
+		if (logLevel == null) {
+		    // No log level defined here
+		} else {
+		    resultBuilder.add("-d" + logLevel);
+		}
 		
 		String clusterName = properties.getProperty("clustername");
 		resultBuilder.add(clusterName);
