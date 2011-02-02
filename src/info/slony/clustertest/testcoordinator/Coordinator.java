@@ -412,12 +412,19 @@ public class Coordinator {
 	
 	
 	public SlonLauncher createSlonLauncher(String logicalDb) {
-		SlonLauncher slon = new SlonLauncher(this,properties,logicalDb,null);
+		SlonLauncher slon = new SlonLauncher(this,properties,logicalDb,(String)null);
 		shellProcesses.add(slon);
 		return slon;
 	}
 	public SlonLauncher createSlonLauncher(String logicalDb, String logshippingDirectory) {
 		SlonLauncher slon = new SlonLauncher(this,properties,logicalDb,logshippingDirectory);
+		shellProcesses.add(slon);
+		return slon;
+	}
+	public SlonLauncher createSlonLauncher(String logicalDb, 
+										   Map<String,String> confValues) {
+		SlonLauncher slon = new SlonLauncher(this,properties,logicalDb,
+											 confValues);
 		shellProcesses.add(slon);
 		return slon;
 	}

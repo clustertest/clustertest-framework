@@ -5,10 +5,13 @@ import info.slony.clustertest.testcoordinator.Event;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Map;
+import java.io.FileWriter;
 
 import org.apache.log4j.Logger;
 
@@ -36,6 +39,12 @@ public class SlonLauncher extends ShellExecScript {
 	 * The directory log shipping spool files should be placed in.
 	 */
 	private String logshippingDirectory=null;
+
+
+	/**
+	 * parameter values to insert into the configuration file.
+	 */
+	private Map<String,String> confFileParameters=null;
 	
 	private class SlonOutputProcessor implements ShellExecScript.OutputLineProcessor {
 		private Pattern copyDonePattern = Pattern.compile(".*CONFIG enableSubscription: sub_set=.*");
@@ -102,9 +111,22 @@ public class SlonLauncher extends ShellExecScript {
 		this.logicalDatabase = logicalDatabase;
 		this.logshippingDirectory=logshippingDirectory;
 	}
+
+	public SlonLauncher(Coordinator coordinator, Properties properties,
+						String logicalDatabase,
+						Map confFileValues)
+	{
+		super(coordinator,logicalDatabase);
+		this.properties=properties;
+		this.logicalDatabase=logicalDatabase;
+		this.confFileParameters=confFileValues;
+
+	}
+						
 	
 	@Override
-	protected ShellExecScript.CommandOptions getExecutablePath() {
+	protected ShellExecScript.CommandOptions getExecutablePath()
+	throws IOException {
 		String slonPath = properties.getProperty("slon.path");
 		ArrayList<String> resultBuilder = new ArrayList<String>();
 		
@@ -123,13 +145,19 @@ public class SlonLauncher extends ShellExecScript {
 		String logLevel = properties.getProperty("slon.loglevel");
 		if (logLevel != null) {
 		    resultBuilder.add("-d" + logLevel);
+		}	
+		
+		if(confFileParameters != null) {
+			
+			/**
+			 * 
+			 */
+			File confFile = generateConfFile(confFileParameters);
+			resultBuilder.add("-f");
+			resultBuilder.add(confFile.getAbsolutePath());				
+
 		}
 
-		String slonConf = properties.getProperty ("database." + logicalDatabase + ".slonconf");
-		if (slonConf != null) {
-		    resultBuilder.add ("-f " + slonConf);
-		}
-		
 		String clusterName = properties.getProperty("clustername");
 		if (clusterName != null) {
 		    resultBuilder.add(clusterName);
@@ -164,6 +192,9 @@ public class SlonLauncher extends ShellExecScript {
 			connInfo.append(" password=");
 			connInfo.append(password);
 		}
+
+	
+		   
 		
 		resultBuilder.add(connInfo.toString());
 		ShellExecScript.CommandOptions options = new ShellExecScript.CommandOptions();
@@ -191,5 +222,21 @@ public class SlonLauncher extends ShellExecScript {
 
 	protected Logger getOutputLogger() {
 		return log;
+	}
+
+	protected File generateConfFile(Map<String,String> params)
+		throws IOException
+	{
+		File confFile = File.createTempFile("slon",".conf");
+		confFile.deleteOnExit();
+		Writer writer = new FileWriter(confFile);
+		for(String confName : params.keySet()) {
+			writer.write(confName + "=" + params.get(confName) + "\n");
+			
+		}
+		writer.close();
+		return confFile;
+
+
 	}
 }

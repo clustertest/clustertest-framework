@@ -296,7 +296,7 @@ public abstract class ShellExecScript implements EventSource {
 			writeInput(scriptWriter);
 
 		} catch (IOException e) {
-			log.error("error communicating with slonik", e);
+			log.error("error communicating with program", e);
 			coordinator.abortTest(e.getMessage());
 		}
 	}
@@ -313,7 +313,7 @@ public abstract class ShellExecScript implements EventSource {
 	
 	protected abstract void writeInput(Writer w) throws IOException;
 
-	protected abstract CommandOptions getExecutablePath();
+	protected abstract CommandOptions getExecutablePath() throws IOException;
 		
 	
 	/**
