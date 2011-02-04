@@ -22,6 +22,7 @@
         <mkdir dir="build/classes"/>
         <javac srcdir="src" destdir="build/classes"  classpathref="classpath" includeantruntime="false" >
         	<include name="info/slony/clustertest/common/**"/>        	
+                <compilerarg value="-Xlint"/>
         </javac>
     </target>
 	
@@ -29,6 +30,7 @@
       <mkdir dir="build/classes"/>
       <javac srcdir="src" destdir="build/classes"  classpathref="classpath" includeantruntime="false" >
 	<include name="info/slony/clustertest/client/**" />
+        <compilerarg value="-Xlint"/>
       </javac>
       <copy toDir="build/classes/info/slony/clustertest/client" flatten="false" >
 	<fileset dir="src/info/slony/clustertest/client">
@@ -43,6 +45,7 @@
       <mkdir dir="build/classes"/>
       <javac srcdir="src" destdir="build/classes"  classpathref="classpath" includeantruntime="false" >
 	<include name="info/slony/clustertest/testcoordinator/**" />
+        <compilerarg value="-Xlint"/>
       </javac>
       <copy toDir="build/classes/info/slony/clustertest/testcoordinator" flatten="false" >
 	<fileset dir="src/info/slony/clustertest/testcoordinator">
