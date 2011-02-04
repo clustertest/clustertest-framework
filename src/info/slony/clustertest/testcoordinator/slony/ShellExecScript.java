@@ -134,7 +134,7 @@ public abstract class ShellExecScript implements EventSource {
 				/**
 				 * Loop through the output.
 				 */
-				NDC.push(label);
+				NDC.push(label + ":" + execProcess.toString() );
 				while ((line = reader.readLine()) != null ) {
 					// Consume a line.
 					// @todo Determine if the output is interesting and dispatch
@@ -250,7 +250,7 @@ public abstract class ShellExecScript implements EventSource {
 			Thread t3 = new Thread(new Runnable() {
 				public void run() {
 					try {
-						NDC.push(label);
+						NDC.push(label + ":" + execProcess.toString());
 						execProcess.waitFor();
 						log.info("exit with return code:" + execProcess.exitValue());
 						try {
