@@ -18,9 +18,8 @@ import org.mozilla.javascript.Undefined;
 
 
 public class ClientGroup extends ScriptableObject {
-	
 	private static Logger log = Logger.getLogger(ClientGroup.class);
-	
+        static final long serialVersionUID = - 123456L;	
 	protected String			groupName;		// Name of this group
 	private ClientEngine	engine;			// Beck reference to engine
 	private int				numWorkers;		// Number of worker threads
