@@ -51,6 +51,7 @@ public class TestResult {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public synchronized void newGroup(String s) throws IOException {
 		if(currentGroup != null) {
 			StringBuilder summary = new StringBuilder();
@@ -75,9 +76,9 @@ public class TestResult {
 				rootLogger.removeAppender(groupAppender);
 			}
 			if(testGroupDir != null) {
-				Enumeration appenderEnum = rootLogger.getAllAppenders();
+				Enumeration<Appender> appenderEnum = (Enumeration<Appender>)rootLogger.getAllAppenders();
 				if(appenderEnum!=null && appenderEnum.hasMoreElements()) {			
-					Appender defaultAppender=(Appender)appenderEnum.nextElement();
+					Appender defaultAppender=appenderEnum.nextElement();
 					groupAppender=new FileAppender(defaultAppender.getLayout(),
 												   testGroupDir+
 												   File.separator + "testlog.log");

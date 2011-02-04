@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.StringBufferInputStream;
+import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +176,7 @@ public class ClientScript implements EventSource {
 	 */
 	private void invokeScript() {
 		try {
-			StringBufferInputStream reader = new StringBufferInputStream(javascript);
+			StringReader reader = new StringReader(javascript);
 			
 			final ClientScript myClientScript=this;
 			//Start a thread to monitor outPipeStream.
