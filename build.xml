@@ -20,14 +20,14 @@
 
     <target name="compile-common">
         <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"  classpathref="classpath" >
+        <javac srcdir="src" destdir="build/classes"  classpathref="classpath" includeantruntime="false" >
         	<include name="info/slony/clustertest/common/**"/>        	
         </javac>
     </target>
 	
     <target name="compile-client" depends="compile-common">
       <mkdir dir="build/classes"/>
-      <javac srcdir="src" destdir="build/classes"  classpathref="classpath">
+      <javac srcdir="src" destdir="build/classes"  classpathref="classpath" includeantruntime="false" >
 	<include name="info/slony/clustertest/client/**" />
       </javac>
       <copy toDir="build/classes/info/slony/clustertest/client" flatten="false" >
@@ -41,7 +41,7 @@
 	
     <target name="compile-testcoordinator" depends="compile-common">
       <mkdir dir="build/classes"/>
-      <javac srcdir="src" destdir="build/classes"  classpathref="classpath">
+      <javac srcdir="src" destdir="build/classes"  classpathref="classpath" includeantruntime="false" >
 	<include name="info/slony/clustertest/testcoordinator/**" />
       </javac>
       <copy toDir="build/classes/info/slony/clustertest/testcoordinator" flatten="false" >
