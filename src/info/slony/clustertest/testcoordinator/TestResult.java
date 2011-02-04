@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 
 import org.apache.log4j.Logger;
-
+import org.apache.log4j.Appender;
+import org.apache.log4j.FileAppender;
 
 /**
  * 
@@ -36,6 +38,8 @@ public class TestResult {
 	private String timeString;
 	private String outputDirectory;
 	private File resultsDirectory;
+	private Appender groupAppender;
+
 	public TestResult(String testName, String outputDirectory) throws IOException {
 		this.testName=testName;
 		this.outputDirectory = outputDirectory;
@@ -60,6 +64,28 @@ public class TestResult {
 			summaryFile.flush();
 			log.info(summary.toString());
 		}
+		File testGroupDir = null;
+		if(s != null) {
+			testGroupDir= new File(resultsDirectory,s);
+			testGroupDir.mkdirs();
+		}
+		Logger rootLogger=Logger.getRootLogger();
+		if( rootLogger != null) {
+			if(groupAppender != null) {
+				rootLogger.removeAppender(groupAppender);
+			}
+			if(testGroupDir != null) {
+				Enumeration appenderEnum = rootLogger.getAllAppenders();
+				if(appenderEnum!=null && appenderEnum.hasMoreElements()) {			
+					Appender defaultAppender=(Appender)appenderEnum.nextElement();
+					groupAppender=new FileAppender(defaultAppender.getLayout(),
+												   testGroupDir+
+												   File.separator + "testlog.log");
+					rootLogger.addAppender(groupAppender);
+				}
+				
+			}
+		}
 		log.info("Starting group " + s);
 		currentGroup=s;
 		passCount=0;
@@ -68,7 +94,8 @@ public class TestResult {
 			if(groupDetailFile != null) {
 				groupDetailFile.close();
 			}
-			groupDetailFile = new FileWriter(new File(resultsDirectory  , "testDetail." + s + ".txt" ));
+			groupDetailFile = new FileWriter(new File(testGroupDir  , 
+													  "testDetail.txt" ));
 		}
 		
 	}
