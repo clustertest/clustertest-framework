@@ -114,7 +114,7 @@ public class SlonLauncher extends ShellExecScript {
 
 	public SlonLauncher(Coordinator coordinator, Properties properties,
 						String logicalDatabase,
-						Map confFileValues)
+			    Map <String,String>confFileValues)
 	{
 		super(coordinator,logicalDatabase);
 		this.properties=properties;
