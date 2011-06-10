@@ -175,10 +175,11 @@ public class ClientScript implements EventSource {
 	 * 
 	 */
 	private void invokeScript() {
+	    final ClientScript myClientScript=this;
 		try {
 			StringReader reader = new StringReader(javascript);
 			
-			final ClientScript myClientScript=this;
+
 			//Start a thread to monitor outPipeStream.
 			
 			log.info("Launching a script");
@@ -206,15 +207,7 @@ public class ClientScript implements EventSource {
 				log.error("interrupted exception waiting for a stream monitor to finish",e);
 			}
 			client.stop();
-		
-			
-			Event finishedEvent = new Event();
-			finishedEvent.source=myClientScript;
-			finishedEvent.eventName=Coordinator.EVENT_FINISHED;
-			coordinator.queueEvent(finishedEvent);
-			synchronized(this) {
-				isFinished=true;
-			}
+								
 
 			
 		}
@@ -223,6 +216,14 @@ public class ClientScript implements EventSource {
 			log.error("ioexception:",e);
 		}
 		finally {
+		
+			Event finishedEvent = new Event();
+			finishedEvent.source=myClientScript;
+			finishedEvent.eventName=Coordinator.EVENT_FINISHED;
+			coordinator.queueEvent(finishedEvent);
+			synchronized(this) {
+				isFinished=true;
+			}	
 			coordinator.scriptComplete(this);
 		}
 		
