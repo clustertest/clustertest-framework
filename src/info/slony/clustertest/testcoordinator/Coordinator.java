@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Stack;
 import java.util.Timer;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -82,6 +83,8 @@ public class Coordinator {
 	private Set<Statement> jdbcStatements = new HashSet<Statement>();
 		
 	private boolean testAborted=false;
+	private Stack<String> slonPathStack= new Stack<String>();
+	private Stack<String> slonikPathStack= new Stack<String>();
 	
 	
 	/**
@@ -601,6 +604,32 @@ public class Coordinator {
 		log.info(message);
 	}
 	
+	/**
+	 * Replaces the path to the current slonik binary with
+	 * the binary specified in the named property.
+	 * The previous value can be restored by calling popSlonikPath() 
+	 */
+	public void pushSlonikPath(String property) {
+		String oldValue = this.properties.getProperty("slonik.path");
+		this.slonikPathStack.push(oldValue);
+		this.properties.setProperty("slonik.path",this.properties.getProperty(property));
+		
+	}
+	public void pushSlonPath(String property) {
+		String oldValue = this.properties.getProperty("slon.path");
+		this.slonPathStack.push(oldValue);
+		this.properties.setProperty("slon.path",this.properties.getProperty(property));
+	}
+	public void popSlonPath() {
+		String value = this.slonPathStack.pop();
+		this.properties.setProperty("slon.path",value);
+		
+	}
+	public void popSlonikPath() {
+		String value = this.slonikPathStack.pop();
+		this.properties.setProperty("slonik.path",value);
+		
+	}
 //	/**
 //	 * Creates a JDBC Connection that is attached to the logical database specified.
 //	 *  
